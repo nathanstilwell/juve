@@ -37,53 +37,104 @@ grunt.initConfig({
 
 ### Options
 
-#### options.separator
+#### options.trials
+Type: `Number`
+Default value: `3`
+
+The number of times each URL will be sampled.
+
+#### options.olympic
+Type: `Boolean`
+Default value: `true`
+
+Indicates whether or not to use olympic-style scoring. This will drop the largest and smallest values for each metric before averaging the trials. Only available when the number of trials is greater than three (3).
+
+#### options.showpasses
+Type: `Boolean`
+Default value: `false`
+
+Indicates whether or not to show successful metrics in the console.
+
+#### options.baseUrl
 Type: `String`
-Default value: `',  '`
+Default value: `http://localhost`
 
-A string value that is used to do something with whatever.
+The URL base used for each task target. This will be prepended to the `url` option specified on each target.
 
-#### options.punctuation
+#### options.url
 Type: `String`
-Default value: `'.'`
+Default value: `/`
 
-A string value that is used to do something else with whatever else.
+The URL to sample. This is combined with the `baseUrl` option to determine the full URL that will be sampled. 
+
+#### options.asserts
+Type: `Object`
+Default value: `{}`
+
+The list of metrics to assert. The keys of this object can be taken directly from the [phantomas documentation](https://github.com/macbre/phantomas#metrics). The values indicate a maximum acceptable value. If multiple trials are used, the results will be averaged and compared to the asserted value.
 
 ### Usage Examples
 
 #### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
-
-```js
-grunt.initConfig({
-  juve: {
-    options: {},
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-});
-```
-
-#### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
+In this example, the default options are used to sample a single page from a target site. This asserts that the page does not make any extra requests.
 
 ```js
 grunt.initConfig({
   juve: {
     options: {
-      separator: ': ',
-      punctuation: ' !!!',
+      baseUrl: 'http://some.url.com',
+      asserts: {
+        requests: 1
+      }
     },
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
+
+    home: {
+      options: {
+        url: '/home'
+      }
+    }
+  }
+});
+```
+
+#### Custom Options
+In this example, some task options are overridden within the target. This can tighen or relax some options on a per-page basis.
+
+```js
+grunt.initConfig({
+  juve: {
+    options: {
+      baseUrl: 'http://some.url.com',
+      asserts: {
+        requests: 1,
+        timeToFirstByte: 200
+      }
     },
-  },
+
+    home: {
+      options: {
+        url: '/home',
+        asserts: {
+          requests: 2
+        }
+      }
+    },
+
+    about: {
+      options: {
+        url: '/about',
+        asserts: {
+          requests: 4,
+          timeToFirstByte: 800
+        }
+      }
+    }
+  }
 });
 ```
 
 ## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
+In lieu of a formal styleguide, take care to maintain the existing coding style. In lieu of a formal test suite, add test cases and fixtures to the project's Gruntfile.js to demonstrate/test things.
 
 ## Release History
-_(Nothing yet)_
+_(working towards v0.1.0)_

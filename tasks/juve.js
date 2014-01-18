@@ -62,7 +62,7 @@ module.exports = function ( grunt, adapter ) {
         if (isNumeric( expected )) {
           // Cut the top/bottom results
           // if using olympic-style scoring
-          if (opts.olympic) {
+          if (olympicScoring) {
             results = olympic( results );
           }
 
@@ -120,7 +120,7 @@ module.exports = function ( grunt, adapter ) {
     grunt.log.writeln('\n' +
       'failed: ' + failed + ', ' +
       'passed: ' + passed + ' ' +
-      (' (' + ((passed / total) * 100).toFixed(2) + '%)').grey
+      (' (' + (total === 0 ? '100' : ((passed / total) * 100).toFixed(2)) + '%)').grey
     );
   }
 

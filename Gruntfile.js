@@ -15,43 +15,54 @@ module.exports = function(grunt) {
     jshint: {
       all: [
         'Gruntfile.js',
-        'tasks/*.js',
-        '<%= nodeunit.tests %>',
+        'tasks/*.js'
       ],
       options: {
         jshintrc: '.jshintrc',
       },
     },
 
-    // Before generating any new files, remove any previously-created files.
-    clean: {
-      tests: ['tmp'],
+    connect: {
+      server: {
+        options: {
+          port: 9002,
+          base: 'test/fixtures'
+        }
+      }
     },
 
     // Configuration to be run (and then tested).
     juve: {
-      default_options: {
-        options: {
-        },
-        files: {
-          'tmp/default_options': ['test/fixtures/testing', 'test/fixtures/123'],
-        },
+      options: {
+        baseUrl: 'http://localhost:9002'
       },
-      custom_options: {
-        options: {
-          separator: ': ',
-          punctuation: ' !!!',
-        },
-        files: {
-          'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123'],
-        },
-      },
-    },
 
-    // Unit tests.
-    nodeunit: {
-      tests: ['test/*_test.js'],
-    },
+      blank_page: {
+        options: {
+          showpasses: true,
+          url: '/blank',
+
+          asserts: {
+            requests: 1,
+            domains: 1,
+
+            // Page Performance
+            timeToFirstByte: 200,
+            onDOMReadyTime: 1000,
+            windowOnLoadTime: 1200,
+            timeToFirstJs: 800,
+
+            // Assets
+            multipleRequests: 0,
+            smallImages: 0,
+
+            // JS Bottlenecks
+            documentWriteCalls: 0,
+            evalCalls: 0
+          }
+        }
+      }
+    }
 
   });
 
@@ -60,12 +71,11 @@ module.exports = function(grunt) {
 
   // These plugins provide necessary tasks.
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-nodeunit');
+  grunt.loadNpmTasks('grunt-contrib-connect');
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
-  grunt.registerTask('test', ['clean', 'juve', 'nodeunit']);
+  grunt.registerTask('test', ['connect', 'juve']);
 
   // By default, lint and run all tests.
   grunt.registerTask('default', ['jshint', 'test']);

@@ -137,4 +137,9 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. In lieu of a formal test suite, add test cases and fixtures to the project's Gruntfile.js to demonstrate/test things.
 
 ## Release History
-_(working towards v0.1.0)_
+
+### v0.1.0
+- Basic functionality
+
+
+_(working towards v0.2.0)_

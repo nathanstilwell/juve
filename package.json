@@ -8,6 +8,7 @@
     "email": "jared.k.stilwell@gmail.com",
     "url": "https://github.com/jared-stilwell"
   },
+  "main": "lib/juve.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/jared-stilwell/juve.git"
@@ -30,7 +31,8 @@
   "devDependencies": {
     "grunt-contrib-jshint": "~0.6.0",
     "grunt": "~0.4.1",
-    "grunt-contrib-connect": "~0.6.0"
+    "grunt-contrib-connect": "~0.6.0",
+    "grunt-contrib-nodeunit": "~0.2.2"
   },
   "peerDependencies": {
     "grunt": "~0.4.1"

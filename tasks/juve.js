@@ -8,13 +8,9 @@
 
 'use strict';
 
-var async = require('async');
-var assert = require('chai').assert;
-var isNumeric = require('isnumeric');
+var juve = require('../lib/juve.js');
 
 module.exports = function ( grunt, adapter ) {
-
-  var phantomas = adapter || require('phantomas');
 
   grunt.registerMultiTask('juve', function () {
     var opts = this.options();
@@ -31,72 +27,24 @@ module.exports = function ( grunt, adapter ) {
 
     // This task is asynchronous
     var allDone = this.async();
-    
-    // Convert config properties into CLI-friendly arguments
-    var config = parseArguments( opts.config );
 
-    // Run the trials in parallel, gathering
-    // the results into a single array.
-    async.times(trialCount, function(n, next) {
+    // Do it!
+    juve({
 
-      phantomas(url, config, function (err, response) {
-        next( null, response.metrics );
+      trials: opts.trials,
+      url: url,
+      assertions: assertions
+
+    }, function (passes, failures) {
+
+      passes.forEach(function (result) {
+        pass( result.name, result.actual );
       });
 
-    }, function( err, trials ) {
-      var passed = 0;
-      var failed = 0;
-      var properties = Object.keys( assertions );
-
-      properties.forEach( function (property) {
-        var combined;
-        var expected = assertions[ property ];
-
-        var results = trials.map(function (result) {
-          // Gather the property we are currently
-          // attempting to assert.
-          return result[ property ];
-        });
-
-        // If the assertion is a number
-        if (isNumeric( expected )) {
-          // Cut the top/bottom results
-          // if using olympic-style scoring
-          if (olympicScoring) {
-            results = olympic( results );
-          }
-
-          // Average the results
-          combined = Math.round( average( results ) );
-
-          // Check the combined results
-          // against the asserted value.
-          try{
-            // Make sure the average is equal or
-            // below the asserted value.
-            assert.isFalse( combined > expected, '');
-
-            // The assertion passed.
-            passed += 1;
-
-            if (showPasses) {
-              pass( property, combined );
-            }
-
-          } catch (err) {
-            // The assertion failed.
-            failed += 1;
-            fail( property, expected, combined );
-          }
-        
-        } else {
-          // TODO: handle any non-numeric values
-          // Diff the fields from the results
-          // Message is diff is not equal to expectation
-        }
+      failures.forEach(function (result) {
+        fail( result.name, result.expected, result.actual );
       });
 
-      summary( passed, failed, properties.length );
       allDone();
     });
   });
@@ -114,59 +62,5 @@ module.exports = function ( grunt, adapter ) {
       '\n\tactual: ' + actual +
       '\n\texpected: ' + expected
     );
-  }
-
-  function summary (passed, failed, total) {
-    grunt.log.writeln('\n' +
-      'failed: ' + failed + ', ' +
-      'passed: ' + passed + ' ' +
-      (' (' + (total === 0 ? '100' : ((passed / total) * 100).toFixed(2)) + '%)').grey
-    );
-  }
-
-  function average (values) {
-    var sum = values.reduce(function (total, next) {
-      return total + next;
-    });
-
-    return sum / values.length;
-  }
-
-  function olympic (values) {
-    var results = values;
-    var max, min;
-
-    // Find and remove the maximum.
-    max = Math.max.apply(results);
-    results.splice( results.indexOf( max ), 1 );
-
-    // Find and remove the minimum.
-    min = Math.min.apply(results);
-    results.splice( results.indexOf( min ), 1 );
-
-    return results;
-  }
-
-  // This is necessary because the phantomas argument
-  // API doesn't parse key:value arguments in the way
-  // you might expect.
-  // 
-  // An config property like { 'disable-javascript': true }
-  // will be parsed to the phantomas CLI correctly as a flag.
-  // However, a key/value pair such as { 'user-agent': 'netscape' }
-  // will be parsed to the CLI as --user-agent netscape,
-  // which is wrong. It should be --user-agent=netscape instead.
-  function parseArguments ( options ) {
-    var config = {};
-
-    Object.keys( options || {} ).forEach(function (option) {
-      var value = options[ option ];
-
-      if (isNumeric( value )) {
-        config[ option + '=' + value ] = true;
-      }
-    });
-
-    return config;
   }
 };

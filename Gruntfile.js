@@ -15,7 +15,9 @@ module.exports = function(grunt) {
     jshint: {
       all: [
         'Gruntfile.js',
-        'tasks/*.js'
+        'lib/*.js',
+        'tasks/*.js',
+        'test/*.js'
       ],
       options: {
         jshintrc: '.jshintrc',
@@ -65,7 +67,15 @@ module.exports = function(grunt) {
     },
 
     nodeunit: {
-      all: ['test/*_test.js']
+      unit: ['test/*_unit_test.js'],
+      integration: ['test/*_integration_test.js']
+    },
+
+    watch: {
+      test: {
+        files: ['lib/*.js', 'test/*_test.js'],
+        tasks: ['nodeunit:unit']
+      }
     }
 
   });
@@ -77,12 +87,13 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
-  grunt.registerTask('test', ['connect', 'nodeunit']);
+  grunt.registerTask('test', ['nodeunit:unit']);
 
   // By default, lint and run all tests.
-  grunt.registerTask('default', ['jshint', 'test']);
+  grunt.registerTask('default', ['jshint', 'test', 'watch']);
 
 };

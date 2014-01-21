@@ -55,11 +55,13 @@ The first argument is an array of passing; the second argument is an array of fa
 
 ```json
 {
-  name: 'some metric',
-  expected: 'the asserted value',
-  actual: 'the actual combined average'
+  "name": "some metric",
+  "expected": "the asserted value",
+  "actual": "the actual combined average"
 }
 ```
+
+The third (and optional) argument is an array of the response objects from each Phantomas trial.
 
 ### Usage Examples
 
@@ -77,7 +79,7 @@ juve({
   }
 
 }, function (passes, fails) {
-  assert( fails.length === 0 );
+  // do some things with the results.
 });
 ```
 
@@ -95,12 +97,12 @@ juve({
     timeToFirstByte: 200
   }
 }, function (passes, fails) {
-  
+  // do stuff with the results and stuff.
 });
 ```
 
 ## Contributing
-In lieu of a formal styleguide, take care to maintain the existing coding style. In lieu of a formal test suite, add test cases and fixtures to the project's Gruntfile.js to demonstrate/test things.
+In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 

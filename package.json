@@ -40,7 +40,9 @@
     "grunt": "~0.4.1"
   },
   "keywords": [
-    "gruntplugin"
+    "performance",
+    "testing",
+    "phantomas"
   ],
   "dependencies": {
     "async": "~0.2.9",

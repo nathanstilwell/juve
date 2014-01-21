@@ -58,7 +58,7 @@ module.exports = {
 		juve({
 			adapter: this.adapter,
 			trials: 1,
-			assertions: assertions
+			asserts: assertions
 		}, this.callback );
 		
 		// The passes from the first arg
@@ -88,7 +88,7 @@ module.exports = {
 		juve({
 			adapter: this.adapter,
 			trials: 1,
-			assertions: assertions
+			asserts: assertions
 		}, this.callback );
 
 		// The fails from the second arg
@@ -128,7 +128,7 @@ module.exports = {
 		juve({
 			adapter: this.adapter,
 			trials: 3,
-			assertions: assertions
+			asserts: assertions
 		}, this.callback );
 
 		// The passes from the first arg of
@@ -168,7 +168,7 @@ module.exports = {
 		juve({
 			adapter: this.adapter,
 			trials: 3,
-			assertions: assertions
+			asserts: assertions
 		}, this.callback );
 
 		// The passes from the first arg of
@@ -215,7 +215,7 @@ module.exports = {
 		juve({
 			adapter: this.adapter,
 			trials: 3,
-			assertions: assertions,
+			asserts: assertions,
 			olympic: true
 		}, this.callback );
 

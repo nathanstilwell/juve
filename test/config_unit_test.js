@@ -41,26 +41,6 @@ module.exports = {
 		test.done();
 	},
 
-	// Using a two-part URL
-	baseUrl: function (test) {
-		var baseUrl = this.url;
-		var path = '/test';
-		var url;
-
-		juve({
-			adapter: this.adapter,
-			baseUrl: baseUrl,
-			url: path
-		});
-
-		url = this.adapter.args[0][0];
-
-		test.expect(1);
-		test.equal( url, baseUrl + path );
-		test.done();
-	},
-
-
 	// Passing configuration options
 	// through the to the adapter's CLI
 	config: function (test) {

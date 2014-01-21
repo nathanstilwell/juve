@@ -2,38 +2,25 @@
 
 > Assert performance metrics using phantomas
 
-## Getting Started
-This plugin requires Grunt `~0.4.1`
-
-If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
-
-```shell
-npm install juve --save-dev
-```
-
-Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
-
-```js
-grunt.loadNpmTasks('juve');
-```
-
-## The "juve" task
+A Node.js module that uses [Phantomas]() to run performance tests against a given URL. It features the ability perform multiple trials against the same URL and make assertions against the combined average metrics.
 
 ### Overview
-In your project's Gruntfile, add a section named `juve` to the data object passed into `grunt.initConfig()`.
+To get started, require the `juve` module.
 
 ```js
-grunt.initConfig({
-  juve: {
-    options: {
-      // Task-specific options go here.
-    },
-    your_target: {
-      // Target-specific file lists and/or options go here.
-    },
-  },
+var juve = require('juve');
+```
+
+This returns a function which accepts a configuration object and a callback with the following structure.
+
+```js
+juve({
+  <options>
+}, function (<passes>, <failures>, <trials>) {
+  ...
 });
 ```
+
 
 ### Options
 
@@ -45,21 +32,9 @@ The number of times each URL will be sampled.
 
 #### options.olympic
 Type: `Boolean`
-Default value: `true`
-
-Indicates whether or not to use olympic-style scoring. This will drop the largest and smallest values for each metric before averaging the trials. Only available when the number of trials is greater than three (3).
-
-#### options.showpasses
-Type: `Boolean`
 Default value: `false`
 
-Indicates whether or not to show successful metrics in the console.
-
-#### options.baseUrl
-Type: `String`
-Default value: `http://localhost`
-
-The URL base used for each task target. This will be prepended to the `url` option specified on each target.
+Indicates whether or not to use olympic-style scoring. This will drop the largest and smallest values for each metric before averaging the trials. Only available when the number of trials is greater than three (3).
 
 #### options.url
 Type: `String`
@@ -73,27 +48,36 @@ Default value: `{}`
 
 The list of metrics to assert. The keys of this object can be taken directly from the [phantomas documentation](https://github.com/macbre/phantomas#metrics). The values indicate a maximum acceptable value. If multiple trials are used, the results will be averaged and compared to the asserted value.
 
+### Callback
+The second argument to the `juve()` function is a callback that gets called once all the trials have completed and the combined results are gathered.
+
+The first argument is an array of passing; the second argument is an array of failing results. The results in each array will look like:
+
+```json
+{
+  name: 'some metric',
+  expected: 'the asserted value',
+  actual: 'the actual combined average'
+}
+```
+
 ### Usage Examples
 
 #### Default Options
 In this example, the default options are used to sample a single page from a target site. This asserts that the page does not make any extra requests.
 
 ```js
-grunt.initConfig({
-  juve: {
-    options: {
-      baseUrl: 'http://some.url.com',
-      asserts: {
-        requests: 1
-      }
-    },
+var juve = require('juve');
 
-    home: {
-      options: {
-        url: '/home'
-      }
-    }
+juve({
+
+  url: 'http://some.site.com',
+  asserts: {
+    requests: 1
   }
+
+}, function (passes, fails) {
+  assert( fails.length === 0 );
 });
 ```
 
@@ -101,35 +85,17 @@ grunt.initConfig({
 In this example, some task options are overridden within the target. This can tighen or relax some options on a per-page basis.
 
 ```js
-grunt.initConfig({
-  juve: {
-    options: {
-      baseUrl: 'http://some.url.com',
-      asserts: {
-        requests: 1,
-        timeToFirstByte: 200
-      }
-    },
+var juve = require('juve');
 
-    home: {
-      options: {
-        url: '/home',
-        asserts: {
-          requests: 2
-        }
-      }
-    },
-
-    about: {
-      options: {
-        url: '/about',
-        asserts: {
-          requests: 4,
-          timeToFirstByte: 800
-        }
-      }
-    }
+juve({
+  
+  url: 'http://some.site.com',
+  asserts: {
+    requests: 1,
+    timeToFirstByte: 200
   }
+}, function (passes, fails) {
+  
 });
 ```
 
@@ -140,6 +106,5 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ### v0.1.0
 - Basic functionality
-
 
 _(working towards v0.2.0)_

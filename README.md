@@ -2,7 +2,7 @@
 
 > Assert performance metrics using phantomas
 
-A Node.js module that uses [Phantomas]() to run performance tests against a given URL. It features the ability perform multiple trials against the same URL and make assertions against the combined average metrics.
+A Node.js module that uses [Phantomas](https://github.com/macbre/phantomas) to run performance tests against a given URL. It features the ability perform multiple trials against the same URL and make assertions against the combined average metrics.
 
 ### Overview
 To get started, require the `juve` module.

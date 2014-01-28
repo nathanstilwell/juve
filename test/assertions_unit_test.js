@@ -30,9 +30,10 @@ module.exports = {
 
 		juve({ adapter: this.adapter, trials: 1 }, this.callback );
 
-		passes = this.callback.args[0][0];
-		fails = this.callback.args[0][1];
-		trials = this.callback.args[0][2];
+		results = this.callback.args[0][0];
+		passes = results.pass;
+		fails = results.fail;
+		trials = results.trials;
 
 		test.expect(3);
 		test.equals( passes.length, 0 );
@@ -63,7 +64,7 @@ module.exports = {
 		
 		// The passes from the first arg
 		// of the first call
-		passes = this.callback.args[0][0];
+		passes = this.callback.args[0][0].pass;
 
 		test.expect(3);
 		test.equal( passes.length, 2 );
@@ -93,7 +94,7 @@ module.exports = {
 
 		// The fails from the second arg
 		// of the first call
-		fails = this.callback.args[0][1];
+		fails = this.callback.args[0][0].fail;
 
 		test.expect(2);
 		test.equal( fails.length, 1 );
@@ -133,7 +134,7 @@ module.exports = {
 
 		// The passes from the first arg of
 		// the first call
-		passes = this.callback.args[0][0];
+		passes = this.callback.args[0][0].pass;
 
 		test.expect(2);
 		test.equal( passes.length, 1 );
@@ -143,14 +144,14 @@ module.exports = {
 
 
 	averageFail: function (test) {
-		var passes, fails;
+		var results, passes, fails;
 
 		// This represents a failing
 		// assertion since the combined
 		// average of the results falls
 		// above the asserted value.
 		var i = 0;
-		var results = [
+		var expected = [
 			{ test: 1 },
 			{ test: 9 },
 			{ test: 2 }
@@ -161,7 +162,7 @@ module.exports = {
 		// Reset the adapter to return the
 		// next result each time it is called.
 		this.adapter = function (url, config, cb) {
-			cb( null, { metrics: results[ i++ ] } );
+			cb( null, { metrics: expected[ i++ ] } );
 		};
 
 
@@ -171,13 +172,15 @@ module.exports = {
 			asserts: assertions
 		}, this.callback );
 
+		results = this.callback.args[0][0];
+
 		// The passes from the first arg of
 		// the first call
-		passes = this.callback.args[0][0];
+		passes = results.pass;
 
 		// The fails from the second arg of
 		// the first call
-		fails = this.callback.args[0][1];
+		fails = results.fail;
 
 		test.expect(5);
 		test.equal( passes.length, 0, 'There should be no passing assertions.' );
@@ -190,14 +193,14 @@ module.exports = {
 
 
 	olympicScoring: function (test) {
-		var passes, fails;
+		var results, passes, fails;
 		
 		// This represents a passing
 		// assertion since the combined
 		// average of the results fall
 		// below the asserted value.
 		var i = 0;
-		var results = [
+		var expected = [
 			{ test1: 1, test2: 1 },
 			{ test1: 9, test2: 7 },
 			{ test1: 4, test2: 9 }
@@ -208,7 +211,7 @@ module.exports = {
 		// Reset the adapter to return the
 		// next result each time it is called.
 		this.adapter = function (url, config, cb) {
-			cb( null, { metrics: results[ i++ ] } );
+			cb( null, { metrics: expected[ i++ ] } );
 		};
 
 
@@ -219,13 +222,15 @@ module.exports = {
 			olympic: true
 		}, this.callback );
 
+		results = this.callback.args[0][0];
+
 		// The passes from the first arg of
 		// the first call
-		passes = this.callback.args[0][0];
+		passes = results.pass;
 
 		// The fails from the second arg of
 		// the first call
-		fails = this.callback.args[0][1];
+		fails = results.fail;
 
 		test.expect(8);
 		test.equal( passes.length, 1, 'There should be no passing assertions.' );

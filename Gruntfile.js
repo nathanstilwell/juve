@@ -88,7 +88,7 @@ module.exports = function(grunt) {
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
-  grunt.registerTask('test', ['nodeunit:unit']);
+  grunt.registerTask('test', ['nodeunit:unit', 'nodeunit:integration']);
 
   // By default, lint and run all tests.
   grunt.registerTask('default', ['jshint', 'test', 'watch']);

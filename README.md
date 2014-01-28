@@ -18,7 +18,7 @@ This returns a function which accepts a configuration object and a callback with
 ```js
 juve({
   <options>
-}, function (<passes>, <failures>, <trials>) {
+}, function (<results>) {
   ...
 });
 ```
@@ -53,17 +53,36 @@ The list of metrics to assert. The keys of this object can be taken directly fro
 ### Callback
 The second argument to the `juve()` function is a callback that gets called once all the trials have completed and the combined results are gathered.
 
-The first argument is an array of passing; the second argument is an array of failing results. The results in each array will look like:
+The argument is an object with three array properties:
+  - `pass`: passing assertions
+  - `fail`: failed assertions
+  - `trials`: all asserted metric for each trial.
 
-```json
+The items in the `pass` and `fail` lists look like:
+
+```javascript
 {
-  "name": "some metric",
-  "expected": "the asserted value",
-  "actual": "the actual combined average"
+  name: "some metric",
+  expected: <the asserted value>,
+  actual: <the actual combined average>
 }
 ```
 
-The third (and optional) argument is an array of the response objects from each Phantomas trial.
+The items in the `trials` list is the raw results from the underlying adapter (i.e. Phantomas).
+
+### Promise
+As an alternative to passing a callback, the `juve` function returns a promise that will pass the results object when resolved.
+
+```javascript
+juve({
+  url: 'http://some.site.com',
+  asserts: {
+    requests: 1
+  }
+}).then(function (results) {
+  // do some things with the results.
+});
+```
 
 ### Usage Examples
 
@@ -80,7 +99,7 @@ juve({
     requests: 1
   }
 
-}, function (passes, fails) {
+}, function (results) {
   // do some things with the results.
 });
 ```
@@ -92,13 +111,12 @@ In this example, some task options are overridden within the target. This can ti
 var juve = require('juve');
 
 juve({
-  
   url: 'http://some.site.com',
   asserts: {
     requests: 1,
     timeToFirstByte: 200
   }
-}, function (passes, fails) {
+}, function (results) {
   // do stuff with the results and stuff.
 });
 ```

@@ -10,14 +10,14 @@ module.exports = {
 
 			trials: 1,
 			url: 'http://localhost:9002/blank.html',
-			assertions: { requests: 1 }
+			asserts: { requests: 1 }
 
-		}, function (passes, failures) {
+		}, function (results) {
 
-			test.equal( passes.length, 1 );
-			test.equal( passes[0].actual, 1 );
-			test.equal( passes[0].expected, 1 );
-			test.equal( passes[0].name, 'requests' );
+			test.equal( results.pass.length, 1 );
+			test.equal( results.pass[0].actual, 1 );
+			test.equal( results.pass[0].expected, 1 );
+			test.equal( results.pass[0].name, 'requests' );
 			test.done();
 
 		});
@@ -29,15 +29,15 @@ module.exports = {
 
 		juve({
 			url: 'http://localhost:9002/blank.html',
-			assertions: {
+			asserts: {
 				requests: 1,
 				bodySize: 20
 			}
-		}, function (passes, failures, trials) {
+		}, function (results) {
 
-			test.equal( passes.length, 1 );
-			test.equal( failures.length, 1 );
-			test.equal( trials.length, 3 );
+			test.equal( results.pass.length, 1 );
+			test.equal( results.fail.length, 1 );
+			test.equal( results.trials.length, 3 );
 			test.done();
 
 		});
@@ -49,14 +49,34 @@ module.exports = {
 
 		juve({
 			url: 'http://localhost:9002/blank.html'
-		}, function (passes, failures, trials) {
+		}, function (results) {
 
-			test.equal( passes.length, 0 );
-			test.equal( failures.length, 0 );
-			test.equal( trials.length, 3 );
+			test.equal( results.pass.length, 0 );
+			test.equal( results.fail.length, 0 );
+			test.equal( results.trials.length, 3 );
 			test.done();
 
 		});	
+	},
+
+	// Returns a promise
+	default_options_with_promise: function (test) {
+		test.expect(3);
+
+		juve({
+			url: 'http://localhost:9002/blank.html',
+			asserts: {
+				requests: 1,
+				bodySize: 20
+			}
+		}).then(function (results) {
+
+			test.equal( results.pass.length, 1 );
+			test.equal( results.fail.length, 1 );
+			test.equal( results.trials.length, 3 );
+			test.done();
+
+		});
 	}
 
 };

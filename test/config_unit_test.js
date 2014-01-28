@@ -66,7 +66,7 @@ module.exports = {
 
 	// Trial count
 	trialCount: function (test) {
-		test.expect(2);
+		test.expect(3);
 
 		// Default trial count
 		juve({
@@ -86,8 +86,18 @@ module.exports = {
 		});
 
 		test.equal( this.adapter.callCount, 5 );
-		test.done();
+		this.adapter.reset();
 
+
+		// Single trial
+		juve({
+			adapter: this.adapter,
+			url: null,
+			trials: 1
+		});
+
+		test.equal( this.adapter.callCount, 1 );
+		test.done();
 	}
 };
 

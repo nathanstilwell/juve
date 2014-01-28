@@ -1,6 +1,6 @@
 # juve
 
-[![Build Status](https://secure.travis-ci.org/jared-stilwell/juve.png)](http://travis-ci.org/jared-stilwell/juve)
+[![Build Status](https://travis-ci.org/jared-stilwell/juve.png?branch=master)](https://travis-ci.org/jared-stilwell/juve)
 
 > Assert performance metrics using phantomas
 

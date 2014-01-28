@@ -86,9 +86,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
+  grunt.registerTask('unit_tests', ['nodeunit:unit']);
+  grunt.registerTask('integration_tests', ['connect', 'nodeunit:integration']);
+
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
-  grunt.registerTask('test', ['nodeunit:unit', 'nodeunit:integration']);
+  grunt.registerTask('test', ['unit_tests', 'integration_tests']);
 
   // By default, lint and run all tests.
   grunt.registerTask('default', ['jshint', 'test', 'watch']);

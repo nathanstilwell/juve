@@ -16,7 +16,7 @@ var juve = require('juve');
 This returns a function which accepts a configuration object and a callback with the following structure.
 
 ```js
-juve({
+juve(<url for the page to test>, {
   <options>
 }, function (<results>) {
   ...
@@ -25,6 +25,12 @@ juve({
 
 
 ### Options
+
+#### options.adapter
+Type: `Function`
+Default value: [The Phantomas npm module](https://github.com/macbre/phantomas/wiki/npm-module)
+
+Anything that supports a similar API could technically be used.
 
 #### options.trials
 Type: `Number`
@@ -37,12 +43,7 @@ Type: `Boolean`
 Default value: `false`
 
 Indicates whether or not to use olympic-style scoring. This will drop the largest and smallest values for each metric before averaging the trials. Only available when the number of trials is greater than three (3).
-
-#### options.url
-Type: `String`
-Default value: `/`
-
-The URL to sample. This is combined with the `baseUrl` option to determine the full URL that will be sampled. 
+ 
 
 #### Assertions
 The other keys of the options object can be taken directly from the [phantomas documentation](https://github.com/macbre/phantomas#metrics). The values indicate a maximum acceptable value. If multiple trials are used, the results will be averaged and compared to the asserted value.

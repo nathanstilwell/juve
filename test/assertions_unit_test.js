@@ -28,7 +28,7 @@ module.exports = {
 	none: function (test) {
 		var passes, fails, trials;
 
-		juve({ adapter: this.adapter, trials: 1 }, this.callback );
+		juve(null, { adapter: this.adapter, trials: 1 }, this.callback );
 
 		results = this.callback.args[0][0];
 		passes = results.pass;
@@ -56,7 +56,7 @@ module.exports = {
 		// Setup the response
 		this.response = { metrics: result };
 
-		juve({
+		juve(null, {
 			adapter: this.adapter,
 			trials: 1,
 			asserts: assertions
@@ -86,7 +86,7 @@ module.exports = {
 		// Setup the response
 		this.response = { metrics: result };
 
-		juve({
+		juve(null, {
 			adapter: this.adapter,
 			trials: 1,
 			asserts: assertions
@@ -126,7 +126,7 @@ module.exports = {
 		};
 
 
-		juve({
+		juve(null, {
 			adapter: this.adapter,
 			trials: 3,
 			asserts: assertions
@@ -166,7 +166,7 @@ module.exports = {
 		};
 
 
-		juve({
+		juve(null, {
 			adapter: this.adapter,
 			trials: 3,
 			asserts: assertions
@@ -215,7 +215,7 @@ module.exports = {
 		};
 
 
-		juve({
+		juve(null, {
 			adapter: this.adapter,
 			trials: 3,
 			asserts: assertions,

@@ -26,9 +26,14 @@ module.exports = {
 
 	// No Assertions
 	none: function (test) {
-		var passes, fails, trials;
+		var results, passes, fails, trials;
 
-		juve(null, { adapter: this.adapter, trials: 1 }, this.callback );
+		juve(null, {
+			options: {
+				adapter: this.adapter,
+				trials: 1
+			}
+		}, this.callback );
 
 		results = this.callback.args[0][0];
 		passes = results.pass;
@@ -51,15 +56,19 @@ module.exports = {
 		// assertions since the result values
 		// are less than or equal to the asserted values
 		var result = { test1: 3, test2: 4 };
-		var assertions = { test1: 4, test2: 4 };
 
 		// Setup the response
 		this.response = { metrics: result };
 
 		juve(null, {
-			adapter: this.adapter,
-			trials: 1,
-			asserts: assertions
+			options: {
+				adapter: this.adapter,
+				trials: 1
+			},
+
+			// Assertions
+			test1: 4,
+			test2: 4
 		}, this.callback );
 		
 		// The passes from the first arg
@@ -81,15 +90,16 @@ module.exports = {
 		// assertion since the result value
 		// is greater than the asserted value
 		var result = { test: 5 };
-		var assertions = { test: 4 };
 
 		// Setup the response
 		this.response = { metrics: result };
 
 		juve(null, {
-			adapter: this.adapter,
-			trials: 1,
-			asserts: assertions
+			options: {
+				adapter: this.adapter,
+				trials: 1
+			},
+			test: 4
 		}, this.callback );
 
 		// The fails from the second arg
@@ -117,8 +127,6 @@ module.exports = {
 			{ test: 3 }
 		];
 
-		var assertions = { test: 3 };
-
 		// Reset the adapter to return the
 		// next result each time it is called.
 		this.adapter = function (url, config, cb) {
@@ -127,9 +135,11 @@ module.exports = {
 
 
 		juve(null, {
-			adapter: this.adapter,
-			trials: 3,
-			asserts: assertions
+			options: {
+				adapter: this.adapter,
+				trials: 3
+			},
+			test: 3
 		}, this.callback );
 
 		// The passes from the first arg of
@@ -157,8 +167,6 @@ module.exports = {
 			{ test: 2 }
 		];
 
-		var assertions = { test: 2 };
-
 		// Reset the adapter to return the
 		// next result each time it is called.
 		this.adapter = function (url, config, cb) {
@@ -167,9 +175,11 @@ module.exports = {
 
 
 		juve(null, {
-			adapter: this.adapter,
-			trials: 3,
-			asserts: assertions
+			options: {
+				adapter: this.adapter,
+				trials: 3
+			},
+			test: 2
 		}, this.callback );
 
 		results = this.callback.args[0][0];
@@ -206,8 +216,6 @@ module.exports = {
 			{ test1: 4, test2: 9 }
 		];
 
-		var assertions = { test1: 4, test2: 6 };
-
 		// Reset the adapter to return the
 		// next result each time it is called.
 		this.adapter = function (url, config, cb) {
@@ -216,10 +224,13 @@ module.exports = {
 
 
 		juve(null, {
-			adapter: this.adapter,
-			trials: 3,
-			asserts: assertions,
-			olympic: true
+			options: {
+				adapter: this.adapter,
+				trials: 3,
+				olympic: true
+			},
+			test1: 4,
+			test2: 6
 		}, this.callback );
 
 		results = this.callback.args[0][0];

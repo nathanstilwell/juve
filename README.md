@@ -44,11 +44,8 @@ Default value: `/`
 
 The URL to sample. This is combined with the `baseUrl` option to determine the full URL that will be sampled. 
 
-#### options.asserts
-Type: `Object`
-Default value: `{}`
-
-The list of metrics to assert. The keys of this object can be taken directly from the [phantomas documentation](https://github.com/macbre/phantomas#metrics). The values indicate a maximum acceptable value. If multiple trials are used, the results will be averaged and compared to the asserted value.
+#### Assertions
+The other keys of the options object can be taken directly from the [phantomas documentation](https://github.com/macbre/phantomas#metrics). The values indicate a maximum acceptable value. If multiple trials are used, the results will be averaged and compared to the asserted value.
 
 ### Callback
 The second argument to the `juve()` function is a callback that gets called once all the trials have completed and the combined results are gathered.
@@ -74,11 +71,8 @@ The items in the `trials` list is the raw results from the underlying adapter (i
 As an alternative to passing a callback, the `juve` function returns a promise that will pass the results object when resolved.
 
 ```javascript
-juve({
-  url: 'http://some.site.com',
-  asserts: {
-    requests: 1
-  }
+juve('http://some.site.com', {
+  requests: 1
 }).then(function (results) {
   // do some things with the results.
 });
@@ -92,13 +86,8 @@ In this example, the default options are used to sample a single page from a tar
 ```js
 var juve = require('juve');
 
-juve({
-
-  url: 'http://some.site.com',
-  asserts: {
-    requests: 1
-  }
-
+juve('http://some.site.com', {
+  requests: 1
 }, function (results) {
   // do some things with the results.
 });
@@ -110,12 +99,9 @@ In this example, some task options are overridden within the target. This can ti
 ```js
 var juve = require('juve');
 
-juve({
-  url: 'http://some.site.com',
-  asserts: {
-    requests: 1,
-    timeToFirstByte: 200
-  }
+juve('http://some.site.com', {
+  requests: 1,
+  timeToFirstByte: 200
 }, function (results) {
   // do stuff with the results and stuff.
 });
@@ -125,6 +111,17 @@ juve({
 In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
+
+### v0.1.3
+- The `juve` function accepts the url as the first parameter.
+- The `juve` function returns a promise in addition to accepting a callback.
+- The `juve` function assumes all properties of the second parameter are assertions. The "options" property is reserved for specifying configuration options.
+- Added travis-ci support.
+- Added integration tests.
+
+### v0.1.2
+- Includes trials in the results.
+- Better test coverage.
 
 ### v0.1.0
 - Basic functionality

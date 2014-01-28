@@ -30,7 +30,9 @@ module.exports = {
 		var url;
 
 		juve(this.url, {
-			adapter: this.adapter
+			options: {
+				adapter: this.adapter
+			}
 		});
 
 		url = this.adapter.args[0][0];
@@ -46,10 +48,12 @@ module.exports = {
 		var config;
 
 		juve(null, {
-			adapter: this.adapter,
-			config: {
-				test: 1,
-				'--user-agent': 'netscape'
+			options: {
+				adapter: this.adapter,
+				config: {
+					test: 1,
+					'--user-agent': 'netscape'
+				}
 			}
 		});
 
@@ -68,7 +72,9 @@ module.exports = {
 
 		// Default trial count
 		juve(null, {
-			adapter: this.adapter
+			options: {
+				adapter: this.adapter
+			}
 		});
 
 		test.equal( this.adapter.callCount, 3 );
@@ -77,8 +83,10 @@ module.exports = {
 
 		// Custom trial count
 		juve(null, {
-			adapter: this.adapter,
-			trials: 5
+			options: {
+				adapter: this.adapter,
+				trials: 5
+			}
 		});
 
 		test.equal( this.adapter.callCount, 5 );
@@ -87,8 +95,10 @@ module.exports = {
 
 		// Single trial
 		juve(null, {
-			adapter: this.adapter,
-			trials: 1
+			options: {
+				adapter: this.adapter,
+				trials: 1
+			}
 		});
 
 		test.equal( this.adapter.callCount, 1 );

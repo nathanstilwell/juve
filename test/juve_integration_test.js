@@ -7,8 +7,8 @@ module.exports = {
 		test.expect(4);
 
 		juve('http://localhost:9002/blank.html', {
-			trials: 1,
-			asserts: { requests: 1 }
+			options: { trials: 1 },
+			requests: 1
 		}, function (results) {
 			test.equal( results.pass.length, 1 );
 			test.equal( results.pass[0].actual, 1 );
@@ -23,10 +23,8 @@ module.exports = {
 		test.expect(3);
 
 		juve('http://localhost:9002/blank.html', {
-			asserts: {
-				requests: 1,
-				bodySize: 20
-			}
+			requests: 1,
+			bodySize: 20
 		}, function (results) {
 			test.equal( results.pass.length, 1 );
 			test.equal( results.fail.length, 1 );
@@ -52,10 +50,8 @@ module.exports = {
 		test.expect(3);
 
 		juve('http://localhost:9002/blank.html', {
-			asserts: {
-				requests: 1,
-				bodySize: 20
-			}
+			requests: 1,
+			bodySize: 20
 		}).then(function (results) {
 			test.equal( results.pass.length, 1 );
 			test.equal( results.fail.length, 1 );

@@ -4,7 +4,7 @@
 
 > Assert performance metrics using phantomas
 
-A Node.js module that uses [Phantomas](https://github.com/macbre/phantomas) to run performance tests against a given URL. It features the ability perform multiple trials against the same URL and make assertions against the combined average metrics.
+A Node.js module that uses [Phantomas](https://github.com/macbre/phantomas) to run performance tests against a given URL. It features the ability to perform multiple trials against the same URL and make assertions against the combined average metrics.
 
 ### Overview
 To get started, require the `juve` module.
@@ -42,8 +42,8 @@ The number of times each URL will be sampled.
 Type: `Boolean`
 Default value: `false`
 
-Indicates whether or not to use olympic-style scoring. This will drop the largest and smallest values for each metric before averaging the trials. Only available when the number of trials is greater than three (3).
- 
+Indicates whether or not to use olympic style scoring. This will drop the largest and smallest values for each metric before averaging the trials. Only available when the number of trials is greater than three 3.
+
 
 #### Assertions
 The other keys of the options object can be taken directly from the [phantomas documentation](https://github.com/macbre/phantomas#metrics). The values indicate a maximum acceptable value. If multiple trials are used, the results will be averaged and compared to the asserted value.
